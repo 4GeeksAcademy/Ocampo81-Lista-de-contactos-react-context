@@ -66,14 +66,14 @@ const getState = ({ getStore, getActions, setStore }) => {
                 try {
                     const response = await fetch("https://playground.4geeks.com/contact/agendas/Ocampo81", {
                         method: "POST",
-                        body: JSON.stringify({ name: "Ocampo81" }), // Asegúrate de que el payload es correcto según la API
+                        body: JSON.stringify({ name: "Ocampo81" }),
                         headers: {
                             "Content-Type": "application/json"
                         }
                     });
 
                     if (!response.ok) {
-                        if (response.status === 400) { // Suponiendo que 400 significa que la agenda ya existe
+                        if (response.status === 400) {
                             console.log("Agenda ya existe");
                         } else {
                             throw new Error("Error creando la agenda");
