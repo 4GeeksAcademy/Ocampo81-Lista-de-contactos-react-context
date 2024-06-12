@@ -8,7 +8,12 @@ export const Home = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
-        actions.getContacts();
+        const initializeAgenda = async () => {
+            await actions.createUser();
+            actions.getContacts();
+        };
+
+        initializeAgenda();
     }, []);
 
     return (

@@ -13,7 +13,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                     .catch(error => console.error("Error fetching contacts:", error));
             },
 
-            // Add new contact
             addContact: async (contact) => {
                 try {
                     let response = await fetch("https://playground.4geeks.com/contact/agendas/Ocampo81/contacts", {
@@ -31,7 +30,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
 
-            // Edit existing contact
             editContact: async (contact, id) => {
                 try {
                     let response = await fetch(`https://playground.4geeks.com/contact/agendas/Ocampo81/contacts/${id}`, {
@@ -49,7 +47,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
 
-            // Delete contact
             deleteContact: async (id) => {
                 try {
                     let response = await fetch(`https://playground.4geeks.com/contact/agendas/Ocampo81/contacts/${id}`, {
@@ -62,6 +59,30 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
                 } catch (error) {
                     console.error("Error deleting contact:", error);
+                }
+            },
+
+            createUser: async () => {
+                try {
+                    const response = await fetch("https://playground.4geeks.com/contact/agendas/Ocampo81", {
+                        method: "POST",
+                        body: JSON.stringify({ name: "Ocampo81" }), // Asegúrate de que el payload es correcto según la API
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+
+                    if (!response.ok) {
+                        if (response.status === 400) { // Suponiendo que 400 significa que la agenda ya existe
+                            console.log("Agenda ya existe");
+                        } else {
+                            throw new Error("Error creando la agenda");
+                        }
+                    } else {
+                        console.log("Agenda creada exitosamente");
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
             }
         }
