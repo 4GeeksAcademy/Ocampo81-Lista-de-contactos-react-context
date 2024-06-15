@@ -5,21 +5,33 @@ import { Context } from "../store/appContext";
 
 export const EditContact = () => {
 	const { store, actions } = useContext(Context);
-	const [edit, setEdit] = useState({});
-    const params =useParams()
-	console.log("esto es params:",params)
-	let ident=params.id
+	const [edit, setEdit] = useState({
+		name: "",
+		email: "",
+		phone: "",
+		address: ""
+	});
+    const params = useParams();
+    const contactId = params.id;
 
+	useEffect(() => {
+		const contact = store.contacts.find(c => c.id === parseInt(contactId));
+		if (contact) {
+			setEdit(contact);
+		}
+	}, [store.contacts, contactId]);
 
-	const handleChange = (e)=>{
+	const handleChange = (e) => {
 		setEdit({
 			...edit,
-			[e.target.name]:e.target.value
-		})
-	}
-	useEffect(()=>{
-		setEdit(params)
-	},[])
+			[e.target.name]: e.target.value
+		});
+	};
+
+	const handleSubmit = () => {
+		actions.editContact(edit, contactId);
+	};
+
 	return (
 		<div className="container">
 			<div className="d-flex justify-content-center align-items-center fs-1">
@@ -27,38 +39,38 @@ export const EditContact = () => {
 			</div>
 			<form>
 				<div className="mb-3">
-					<label for="Name" className="form-label fw-bold">Full Name</label>
-					<input type="text" className="form-control" id="Name" value={edit.name} 
-					name ="name"
-					onChange={handleChange}/>
+					<label htmlFor="Name" className="form-label fw-bold">Full Name</label>
+					<input type="text" className="form-control" id="Name" value={edit.name}
+						name="name"
+						onChange={handleChange} />
 				</div>
 				<div className="mb-3">
-					<label for="Email" className="form-label fw-bold">Email</label>
+					<label htmlFor="Email" className="form-label fw-bold">Email</label>
 					<input type="email" className="form-control" id="Email" value={edit.email}
-					name ="email"
-					onChange={handleChange} />
+						name="email"
+						onChange={handleChange} />
 				</div>
 				<div className="mb-3">
-					<label for="Phone" className="form-label fw-bold">Phone</label>
-					<input type="text" className="form-control" id="Phone" value={edit.phone} 
-					name ="phone"
-					onChange={handleChange}/>
+					<label htmlFor="Phone" className="form-label fw-bold">Phone</label>
+					<input type="text" className="form-control" id="Phone" value={edit.phone}
+						name="phone"
+						onChange={handleChange} />
 				</div>
 				<div className="mb-3">
-					<label for="Address" className="form-label fw-bold">Address</label>
-					<input type="text" className="form-control" id="Address" value= {edit.address} 
-					name ="address"
-					onChange={handleChange}/>
+					<label htmlFor="Address" className="form-label fw-bold">Address</label>
+					<input type="text" className="form-control" id="Address" value={edit.address}
+						name="address"
+						onChange={handleChange} />
 				</div>
-				<Link to= "/">
-				<button type="button" className="btn btn-primary w-100" onClick={()=>{
-					actions.editContact(edit,ident)		
-				}}>Save Changes</button>
+				<Link to="/">
+					<button type="button" className="btn btn-primary w-100" onClick={handleSubmit}>
+						Save Changes
+					</button>
 				</Link>
-				<Link to = "/">
-					<a>or get back to contacs</a>
+				<Link to="/">
+					<a>or get back to contacts</a>
 				</Link>
 			</form>
 		</div>
-	)
-}
+	);
+};
